@@ -12,13 +12,13 @@ module.exports = function(){
   return {
     update: function() {
       py = state.aiy
-      const desty = state.bally - (props.paddleHeight - props.ballSize)*0.5;
+      const desty = state.bally - (state.paddleHeight - state.ballSize)*0.5;
       py = py + (desty - py) * 0.1
       that.setState({aiy: py})
     },
     draw(){
       context.fillRect( state.aix, state.aiy,
-        props.paddleWidth, props.paddleHeight);
+        state.paddleWidth, state.paddleHeight);
     },
     name(){
       return 'ai';

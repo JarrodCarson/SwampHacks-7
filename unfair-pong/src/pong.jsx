@@ -22,17 +22,17 @@ export default createReactClass({
   getDefaultProps() {
     return {
       height: 700,
-      width: 1400,
+      width: 1400
+    }
+  },
+  getInitialState(){
+    return {
       upArrow: 38,
       downArrow: 40,
       paddleHeight: 100,
       paddleWidth: 20,
       paddleSpeed: 2.5,
-      ballSize: 10
-    }
-  },
-  getInitialState(){
-    return {
+      ballSize: 10,
       ballx: 100,
       bally: 100,
       ballSpeed: 1,
@@ -182,7 +182,7 @@ export default createReactClass({
   },
   _touch(evt) {
     console.log( evt );
-    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.props.paddleHeight/2;
+    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight/2;
     this._player().position(yPos);
   },
   render() {
