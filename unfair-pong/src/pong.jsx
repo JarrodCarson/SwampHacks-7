@@ -48,15 +48,15 @@ export default createReactClass({
   },
   componentDidMount: function() {
     this._setupCanvas();
-    this._context.font = '30px Lucida Console';
+    this._context.font = '40px Lucida Console';
     this._context.fillText('Welcome to:',
-      this.props.width/2 - 100,
+      this.props.width/2 - 120,
       this.props.height/2 - 40);
     this._context.fillText('UNFAIR PONG',
-      this.props.width/2 - 100,
+      this.props.width/2 - 120,
       this.props.height/2);
 
-    setTimeout(this._startGame, 1000);
+    setTimeout(this._startGame, 3000);
   },
   _keystate: {},
   _canvas: undefined,
@@ -133,7 +133,7 @@ export default createReactClass({
     const state = this.state;
     this._context.fillRect(0, 0, this.props.width, this.props.height);
     this._context.save();
-    this._context.fillStyle = "#fff";
+    this._context.fillStyle = "#00ff00";
 
     // draw scoreboard
     this._context.font = '20px Lucida Console';
