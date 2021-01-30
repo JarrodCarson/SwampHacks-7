@@ -57,13 +57,13 @@ module.exports = function(){
         const n = ( state.bally + props.ballSize - pdle.position().y )/( props.paddleHeight + props.ballSize );
         const ydir = ( n > 0.5 ? -1 : 1 ) * dir;
         const phi = (0.25 * pi) * ( 2 * n + dir ) + r;
-        const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
+        //const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
 
         that.setState({
           ballx: pdle === player ?
           state.playerx + props.paddleWidth : state.aix - props.ballSize,
-          velx: smash * -1 * state.velx,
-          vely: smash * ydir * state.velx * Math.sin(phi)
+          velx: -1 * state.velx,
+          vely: ydir * state.velx * Math.sin(phi)
         });
       }
 
