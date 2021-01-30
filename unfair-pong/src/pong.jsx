@@ -21,13 +21,13 @@ export default createReactClass({
   },
   getDefaultProps() {
     return {
-      height: 600,
-      width: 700,
+      height: 700,
+      width: 1400,
       upArrow: 38,
       downArrow: 40,
       paddleHeight: 100,
       paddleWidth: 20,
-      paddleSpeed: 5,
+      paddleSpeed: 2.5,
       ballSize: 10
     }
   },
@@ -35,10 +35,10 @@ export default createReactClass({
     return {
       ballx: 100,
       bally: 100,
-      ballSpeed: 2,
+      ballSpeed: 1,
       velx: 0,
       vely: 0,
-      aix: 670,
+      aix: 1370,
       aiy: 100,
       playerx: 10,
       playery: 100,
