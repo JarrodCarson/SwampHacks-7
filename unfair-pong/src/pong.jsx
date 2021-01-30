@@ -129,9 +129,12 @@ export default createReactClass({
     if (scorer === 'ai') {
       setTimeout(()=>{
         this._context.font = '30px Lucida Console';
-        this._context.fillText(scorer + ' score!',
-          this.props.width/2,
-          this.props.height/2 );
+        this._context.fillText("Game Over!",
+        this.props.width/2 - 120,
+        this.props.height/2 - 40);
+        this._context.fillText('Score: ' + state.playerScore,
+        this.props.width/2 - 120,
+        this.props.height/2);
         this._context.restore();
       }, 0);
     }
