@@ -68,13 +68,7 @@ module.exports = function(){
         });
       }
 
-<<<<<<< HEAD
-      // Border collision
-
-      if (0 > state.ballx + props.ballSize || state.ballx > props.width) {
-=======
       if (0 > state.ballx + state.ballSize || state.ballx > props.width) {
->>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
         score(pdle.name());
         this.serve( pdle.name() === player.name() ? 1 : -1);
       }

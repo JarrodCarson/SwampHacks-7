@@ -34,15 +34,6 @@ export default createReactClass({
       paddleWidth: 20,
       paddleSpeed: 2.5,
       ballSize: 10,
-<<<<<<< HEAD
-      borderHeight: 700 * 0.05,
-      borderWidth: 1400 - 20
-    }
-  },
-  getInitialState(){
-    return {
-=======
->>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
       ballx: 100,
       bally: 100,
       ballSpeed: 1,
@@ -52,14 +43,10 @@ export default createReactClass({
       aiy: 100,
       playerx: 10,
       playery: 100,
-<<<<<<< HEAD
       playerScore: 0,
       aiScore: 0,
       eventTriggerVal: Math.floor(Math.random() * 15) + 1,
       paddleHits: 0
-=======
-      playerScore: 0
->>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
     }
   },
   componentDidMount: function() {
