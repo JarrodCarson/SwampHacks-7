@@ -48,7 +48,7 @@ export default createReactClass({
   },
   componentDidMount: function() {
     this._setupCanvas();
-    this._context.font = '30px Arial';
+    this._context.font = '30px Lucida Console';
     this._context.fillText('Starting Game',
       this.props.width/2,
       this.props.height/2 );
@@ -113,7 +113,7 @@ export default createReactClass({
     });
     this._stopGame();
     setTimeout(()=>{
-      this._context.font = '30px Arial';
+      this._context.font = '30px Lucida Console';
       this._context.fillText(scorer + ' score!',
         this.props.width/2,
         this.props.height/2 );
@@ -133,9 +133,9 @@ export default createReactClass({
     this._context.fillStyle = "#fff";
 
     // draw scoreboard
-    this._context.font = '10px Arial';
-    this._context.fillText('Player: ' + state.playerScore , 10, 10 );
-    this._context.fillText('CPU: ' + state.aiScore , 500, 10  );
+    this._context.font = '20px Lucida Console';
+    this._context.fillText('Player: ' + state.playerScore , 20, 20 );
+    this._context.fillText('CPU: ' + state.aiScore , 1300, 20  );
 
     //draw ball
     this._ball().draw();
