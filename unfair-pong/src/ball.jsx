@@ -57,11 +57,7 @@ module.exports = function(){
         const n = ( state.bally + props.ballSize - pdle.position().y )/( props.paddleHeight + props.ballSize );
         const ydir = ( n > 0.5 ? -1 : 1 ) * dir;
         const phi = (0.25 * pi) * ( 2 * n + dir ) + r;
-<<<<<<< HEAD
         // const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
-=======
-        //const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
->>>>>>> c480ceb299fc814e719fd084eaba6b04ae2d9951
 
         that.setState({
           ballx: pdle === player ?
