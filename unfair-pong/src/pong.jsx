@@ -115,18 +115,23 @@ export default createReactClass({
       [scorer+'Score']: state[scorer+'Score'] + 1
     });
     this._stopGame();
-    setTimeout(()=>{
-      this._context.font = '30px Lucida Console';
-      this._context.fillText(scorer + ' score!',
-        this.props.width/2,
-        this.props.height/2 );
-      this._context.restore();
-    }, 0);
 
-    setTimeout(()=>{
-      this._setupCanvas();
-      this._startGame();
-    }, 1000);
+    if (scorer === 'ai') {
+      setTimeout(()=>{
+        this._context.font = '30px Lucida Console';
+        this._context.fillText(scorer + ' score!',
+          this.props.width/2,
+          this.props.height/2 );
+        this._context.restore();
+      }, 0);
+    }
+    
+    else {
+      setTimeout(()=>{
+        this._setupCanvas();
+        this._startGame();
+      }, 0);
+    }
   },
   _draw() {
     // draw background
