@@ -63,9 +63,12 @@ module.exports = function(){
           ballx: pdle === player ?
           state.playerx + props.paddleWidth : state.aix - props.ballSize,
           velx: -1 * state.velx,
-          vely: ydir * state.velx * Math.sin(phi)
+          vely: ydir * state.velx * Math.sin(phi),
+          paddleHits: state.paddleHits += 1
         });
       }
+
+      // Border collision
 
       if (0 > state.ballx + props.ballSize || state.ballx > props.width) {
         score(pdle.name());

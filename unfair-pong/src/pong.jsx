@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+
 var createReactClass = require('create-react-class');
 
 export default createReactClass({
@@ -28,7 +29,9 @@ export default createReactClass({
       paddleHeight: 100,
       paddleWidth: 20,
       paddleSpeed: 2.5,
-      ballSize: 10
+      ballSize: 10,
+      borderHeight: 700 * 0.05,
+      borderWidth: 1400 - 20
     }
   },
   getInitialState(){
@@ -43,7 +46,9 @@ export default createReactClass({
       playerx: 10,
       playery: 100,
       playerScore: 0,
-      aiScore: 0
+      aiScore: 0,
+      eventTriggerVal: Math.floor(Math.random() * 15) + 1,
+      paddleHits: 0
     }
   },
   componentDidMount: function() {
@@ -61,6 +66,7 @@ export default createReactClass({
   _ball: require('./ball'),
   _player: require('./player'),
   _ai: require('./ai'),
+  _border: require('./border'),
   _loop: null,
   _canvasStyle: {
     display: 'block',
@@ -90,6 +96,7 @@ export default createReactClass({
     this._loop = setInterval( () => {
       this._update();
       this._draw();
+      this._triggerEvent();
     },1);
     this._ball().serve(1);
   },
@@ -132,6 +139,9 @@ export default createReactClass({
     this._context.save();
     this._context.fillStyle = "#fff";
 
+    //draw borders
+    //this._border.draw();
+
     // draw scoreboard
     this._context.font = '10px Arial';
     this._context.fillText('Player: ' + state.playerScore , 10, 10 );
@@ -164,6 +174,17 @@ export default createReactClass({
     console.log( evt );
     var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.props.paddleHeight/2;
     this._player().position(yPos);
+  },
+  // Triggers random event if conditions met
+  _triggerEvent(){
+    const state = this.state;
+    if (this.state.paddleHits == this.state.eventTriggerVal) {
+      this.setState({
+        paddleHits: 0,
+        eventTriggerVal: Math.floor(Math.random() * 15) + 1
+      });
+      console.log("Event Triggered!\n")
+    }
   },
   render() {
     return <canvas
