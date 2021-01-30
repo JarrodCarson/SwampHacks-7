@@ -23,19 +23,26 @@ export default createReactClass({
   getDefaultProps() {
     return {
       height: 700,
-      width: 1400,
+      width: 1400
+    }
+  },
+  getInitialState(){
+    return {
       upArrow: 38,
       downArrow: 40,
       paddleHeight: 100,
       paddleWidth: 20,
       paddleSpeed: 2.5,
       ballSize: 10,
+<<<<<<< HEAD
       borderHeight: 700 * 0.05,
       borderWidth: 1400 - 20
     }
   },
   getInitialState(){
     return {
+=======
+>>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
       ballx: 100,
       bally: 100,
       ballSpeed: 1,
@@ -45,20 +52,27 @@ export default createReactClass({
       aiy: 100,
       playerx: 10,
       playery: 100,
+<<<<<<< HEAD
       playerScore: 0,
       aiScore: 0,
       eventTriggerVal: Math.floor(Math.random() * 15) + 1,
       paddleHits: 0
+=======
+      playerScore: 0
+>>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
     }
   },
   componentDidMount: function() {
     this._setupCanvas();
-    this._context.font = '30px Arial';
-    this._context.fillText('Starting Game',
-      this.props.width/2,
-      this.props.height/2 );
+    this._context.font = '40px Lucida Console';
+    this._context.fillText('Welcome to:',
+      this.props.width/2 - 120,
+      this.props.height/2 - 40);
+    this._context.fillText('UNFAIR PONG',
+      this.props.width/2 - 120,
+      this.props.height/2);
 
-    setTimeout(this._startGame, 1000);
+    setTimeout(this._startGame, 3000);
   },
   _keystate: {},
   _canvas: undefined,
@@ -68,6 +82,7 @@ export default createReactClass({
   _ai: require('./ai'),
   _border: require('./border'),
   _loop: null,
+  _timer: null,
   _canvasStyle: {
     display: 'block',
     position: 'absolute',
@@ -98,11 +113,21 @@ export default createReactClass({
       this._draw();
       this._triggerEvent();
     },1);
+
+    this._timer = setInterval( () => {
+      const state = this.state;
+      this.setState({
+        ["playerScore"]: state["playerScore"] + 1
+      });
+    }, 1000);
+
     this._ball().serve(1);
   },
   _stopGame() {
     clearInterval(this._loop);
+    clearInterval(this._timer);
     this._loop = null;
+    this._timer = null;
     setTimeout(()=>{
       this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
     }, 0);
@@ -119,33 +144,40 @@ export default createReactClass({
       [scorer+'Score']: state[scorer+'Score'] + 1
     });
     this._stopGame();
-    setTimeout(()=>{
-      this._context.font = '30px Arial';
-      this._context.fillText(scorer + ' score!',
-        this.props.width/2,
-        this.props.height/2 );
-      this._context.restore();
-    }, 0);
 
-    setTimeout(()=>{
-      this._setupCanvas();
-      this._startGame();
-    }, 1000);
+    if (scorer === 'ai') {
+      setTimeout(()=>{
+        this._context.font = '30px Lucida Console';
+        this._context.fillText("Game Over!",
+        this.props.width/2 - 120,
+        this.props.height/2 - 40);
+        this._context.fillText('Score: ' + state.playerScore,
+        this.props.width/2 - 120,
+        this.props.height/2);
+        this._context.restore();
+      }, 0);
+    }
+    
+    else {
+      setTimeout(()=>{
+        this._setupCanvas();
+        this._startGame();
+      }, 0);
+    }
   },
   _draw() {
     // draw background
     const state = this.state;
     this._context.fillRect(0, 0, this.props.width, this.props.height);
     this._context.save();
-    this._context.fillStyle = "#fff";
+    this._context.fillStyle = "#00ff00";
 
     //draw borders
     //this._border.draw();
 
     // draw scoreboard
-    this._context.font = '10px Arial';
-    this._context.fillText('Player: ' + state.playerScore , 10, 10 );
-    this._context.fillText('CPU: ' + state.aiScore , 500, 10  );
+    this._context.font = '20px Lucida Console';
+    this._context.fillText('Player: ' + state.playerScore , 20, 20 );
 
     //draw ball
     this._ball().draw();
@@ -172,7 +204,7 @@ export default createReactClass({
   },
   _touch(evt) {
     console.log( evt );
-    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.props.paddleHeight/2;
+    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight/2;
     this._player().position(yPos);
   },
   // Triggers random event if conditions met
