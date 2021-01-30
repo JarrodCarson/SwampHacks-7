@@ -42,8 +42,7 @@ export default createReactClass({
       aiy: 100,
       playerx: 10,
       playery: 100,
-      playerScore: 0,
-      aiScore: 0
+      playerScore: 0
     }
   },
   componentDidMount: function() {
@@ -65,6 +64,7 @@ export default createReactClass({
   _player: require('./player'),
   _ai: require('./ai'),
   _loop: null,
+  _timer: null,
   _canvasStyle: {
     display: 'block',
     position: 'absolute',
@@ -94,11 +94,21 @@ export default createReactClass({
       this._update();
       this._draw();
     },1);
+
+    this._timer = setInterval( () => {
+      const state = this.state;
+      this.setState({
+        ["playerScore"]: state["playerScore"] + 1
+      });
+    }, 1000);
+
     this._ball().serve(1);
   },
   _stopGame() {
     clearInterval(this._loop);
+    clearInterval(this._timer);
     this._loop = null;
+    this._timer = null;
     setTimeout(()=>{
       this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
     }, 0);
@@ -143,7 +153,6 @@ export default createReactClass({
     // draw scoreboard
     this._context.font = '20px Lucida Console';
     this._context.fillText('Player: ' + state.playerScore , 20, 20 );
-    this._context.fillText('CPU: ' + state.aiScore , 1300, 20  );
 
     //draw ball
     this._ball().draw();
