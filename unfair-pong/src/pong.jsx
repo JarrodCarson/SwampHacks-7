@@ -3,18 +3,21 @@
  */
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+var createReactClass = require('create-react-class');
 
-export default React.createClass({
+export default createReactClass({
   propTypes: {
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
-    upArrow: React.PropTypes.number,
-    downArrow: React.PropTypes.number,
-    ballSize: React.PropTypes.number,
-    paddleHeight: React.PropTypes.number,
-    paddleWidth: React.PropTypes.number,
-    paddleSpeed: React.PropTypes.number
+    height: PropTypes.number,
+    width: PropTypes.number,
+    upArrow: PropTypes.number,
+    downArrow: PropTypes.number,
+    ballSize: PropTypes.number,
+    paddleHeight: PropTypes.number,
+    paddleWidth: PropTypes.number,
+    paddleSpeed: PropTypes.number
   },
   getDefaultProps() {
     return {
@@ -99,7 +102,7 @@ export default React.createClass({
 
   },
   _setupCanvas: function() {
-    this._canvas = this.getDOMNode();
+    this._canvas = ReactDOM.findDOMNode(this);
     this._context = this._canvas.getContext('2d');
   },
   _score(name) {
