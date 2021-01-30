@@ -63,7 +63,8 @@ module.exports = function(){
           ballx: pdle === player ?
           state.playerx + state.paddleWidth : state.aix - state.ballSize,
           velx: -1 * state.velx,
-          vely: ydir * state.velx * Math.sin(phi)
+          vely: ydir * state.velx * Math.sin(phi),
+          paddleHits: state.paddleHits += 1
         });
       }
 
