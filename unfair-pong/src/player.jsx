@@ -12,22 +12,22 @@ module.exports = function(){
   return {
     update() {
       py = state.playery;
-      if (keystate[props.upArrow]){
-        py = state.playery - props.paddleSpeed;
+      if (keystate[state.upArrow]){
+        py = state.playery - state.paddleSpeed;
         that.setState({playery: py});
       }
-      if (keystate[props.downArrow]){
-        py = state.playery + props.paddleSpeed;
+      if (keystate[state.downArrow]){
+        py = state.playery + state.paddleSpeed;
         that.setState({playery: py});
       }
       // keep the paddle inside of the canvas
-      py = Math.max(Math.min(py, props.height - props.paddleHeight), 0);
+      py = Math.max(Math.min(py, props.height - state.paddleHeight), 0);
       that.setState({playery: py});
 
     },
     draw(){
       context.fillRect(state.playerx, state.playery,
-        props.paddleWidth, props.paddleHeight);
+        state.paddleWidth, state.paddleHeight);
     },
     name(){
       return 'player';
