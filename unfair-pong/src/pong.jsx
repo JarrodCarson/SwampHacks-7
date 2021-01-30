@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+
 var createReactClass = require('create-react-class');
 
 export default createReactClass({
@@ -33,6 +34,15 @@ export default createReactClass({
       paddleWidth: 20,
       paddleSpeed: 2.5,
       ballSize: 10,
+<<<<<<< HEAD
+      borderHeight: 700 * 0.05,
+      borderWidth: 1400 - 20
+    }
+  },
+  getInitialState(){
+    return {
+=======
+>>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
       ballx: 100,
       bally: 100,
       ballSpeed: 1,
@@ -42,7 +52,14 @@ export default createReactClass({
       aiy: 100,
       playerx: 10,
       playery: 100,
+<<<<<<< HEAD
+      playerScore: 0,
+      aiScore: 0,
+      eventTriggerVal: Math.floor(Math.random() * 15) + 1,
+      paddleHits: 0
+=======
       playerScore: 0
+>>>>>>> 5317c1bc2591e98d50fc24f6cd178b2db19eb3d9
     }
   },
   componentDidMount: function() {
@@ -63,6 +80,7 @@ export default createReactClass({
   _ball: require('./ball'),
   _player: require('./player'),
   _ai: require('./ai'),
+  _border: require('./border'),
   _loop: null,
   _timer: null,
   _canvasStyle: {
@@ -93,6 +111,7 @@ export default createReactClass({
     this._loop = setInterval( () => {
       this._update();
       this._draw();
+      this._triggerEvent();
     },1);
 
     this._timer = setInterval( () => {
@@ -153,6 +172,9 @@ export default createReactClass({
     this._context.save();
     this._context.fillStyle = "#00ff00";
 
+    //draw borders
+    //this._border.draw();
+
     // draw scoreboard
     this._context.font = '20px Lucida Console';
     this._context.fillText('Player: ' + state.playerScore , 20, 20 );
@@ -184,6 +206,17 @@ export default createReactClass({
     console.log( evt );
     var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight/2;
     this._player().position(yPos);
+  },
+  // Triggers random event if conditions met
+  _triggerEvent(){
+    const state = this.state;
+    if (this.state.paddleHits == this.state.eventTriggerVal) {
+      this.setState({
+        paddleHits: 0,
+        eventTriggerVal: Math.floor(Math.random() * 15) + 1
+      });
+      console.log("Event Triggered!\n")
+    }
   },
   render() {
     return <canvas
