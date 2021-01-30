@@ -49,9 +49,12 @@ export default createReactClass({
   componentDidMount: function() {
     this._setupCanvas();
     this._context.font = '30px Lucida Console';
-    this._context.fillText('Starting Game',
-      this.props.width/2,
-      this.props.height/2 );
+    this._context.fillText('Welcome to:',
+      this.props.width/2 - 100,
+      this.props.height/2 - 40);
+    this._context.fillText('UNFAIR PONG',
+      this.props.width/2 - 100,
+      this.props.height/2);
 
     setTimeout(this._startGame, 1000);
   },
