@@ -73,7 +73,7 @@ module.exports = function(){
         // beep sound      
         const myAudio1 = document.createElement("audio");
         if( dir > 0) {
-            myAudio1.src = "beep-03.mp3";
+            myAudio1.src = "person-beep.mp3";
             myAudio1.play();
         } else {
             myAudio1.src = "beep-10.mp3";
