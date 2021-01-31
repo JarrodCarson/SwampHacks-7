@@ -21,7 +21,7 @@ export default createReactClass({
       width: 1400
     }
   },
-  getInitialState(){
+  getInitialState() {
     return {
       upArrow: 38,
       downArrow: 40,
@@ -45,21 +45,20 @@ export default createReactClass({
       paddleHits: 0,
       difficulty: 1,
       enable3D: false,
-      ghostBall: false,
-      ghostInterval: 0,
+      randomSize: false,
       mostRecentEvent: "",
       smashMultiplier: 1
     }
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     this._setupCanvas();
     this._context.font = '40px Lucida Console';
     this._context.fillText('Welcome to:',
-      this.props.width/2 - 120,
-      this.props.height/2 - 40);
+      this.props.width / 2 - 120,
+      this.props.height / 2 - 40);
     this._context.fillText('UNFAIR PONG',
-      this.props.width/2 - 120,
-      this.props.height/2);
+      this.props.width / 2 - 120,
+      this.props.height / 2);
 
     setTimeout(this._startGame, 3000);
   },
@@ -70,7 +69,6 @@ export default createReactClass({
   _player: require('./player'),
   _ai: require('./ai'),
   _border: require('./border'),
-  _events: require('./events'),
   _loop: null,
   _timer: null,
   _canvasStyle: {
@@ -84,27 +82,27 @@ export default createReactClass({
   },
   _startGame() {
 
-    if(this._loop){
+    if (this._loop) {
       return;
     }
 
     const keystate = this._keystate;
-    document.addEventListener('keydown', function(evt) {
+    document.addEventListener('keydown', function (evt) {
       keystate[evt.keyCode] = true;
     });
-    document.addEventListener('keyup', function(evt) {
+    document.addEventListener('keyup', function (evt) {
       delete keystate[evt.keyCode];
     });
-    document.addEventListener('ontouchstart', function(e) {e.preventDefault()}, false);
-    document.addEventListener('ontouchmove', function(e) {e.preventDefault()}, false);
+    document.addEventListener('ontouchstart', function (e) { e.preventDefault() }, false);
+    document.addEventListener('ontouchmove', function (e) { e.preventDefault() }, false);
 
-    this._loop = setInterval( () => {
+    this._loop = setInterval(() => {
       this._update();
       this._draw();
       this._triggerEvent();
-    },1);
+    }, 1);
 
-    this._timer = setInterval( () => {
+    this._timer = setInterval(() => {
       const state = this.state;
       this.setState({
         ["playerScore"]: state["playerScore"] + 1
@@ -118,81 +116,168 @@ export default createReactClass({
     clearInterval(this._timer);
     this._loop = null;
     this._timer = null;
-    setTimeout(()=>{
+    setTimeout(() => {
       this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
     }, 0);
 
   },
-  _setupCanvas: function() {
+  _setupCanvas: function () {
     this._canvas = ReactDOM.findDOMNode(this);
     this._context = this._canvas.getContext('2d');
   },
   _score(name) {
     const state = this.state;
-    const scorer = {player: 'ai', ai: 'player'}[name];
+    const scorer = { player: 'ai', ai: 'player' }[name];
     this.setState({
-      [scorer+'Score']: state[scorer+'Score'] + 1
+      [scorer + 'Score']: state[scorer + 'Score'] + 1
     });
     this._stopGame();
 
     if (scorer === 'ai') {
-      setTimeout(()=>{
-        this._context.font = '80px Lucida Console';
-        this._context.fillText("GAME OVER!",
-          this.props.width/2 - 240,
-          this.props.height/2 - 80);
+      // TODO: change once we are able to gets highscores from DB
+      // if state.playerScore < lowest high score, or something like that
+      if (state.playerScore < 1) {
+        setTimeout(()=>{
+          this._context.font = '80px Lucida Console';
+          this._context.fillText("GAME OVER!",
+            this.props.width/2 - 240,
+            this.props.height/2 - 80);
+          
+          this._context.font = '60px Lucida Console';
+          this._context.fillText('Score: ' + state.playerScore,
+            this.props.width/2 - 160,
+            this.props.height/2);
+          this._context.restore();
+        }, 0);
+      }
+      else {
+        const style_scorerow = {
+          display: "flex",
+          justifyContent: "center",
+          fontFamily: "Lucida Console",
+          fontSize: 40,
+          color: "black",
+          height: 70,
+          width: "100%"
+        };
+
+        const style_scorecell = {
+          width:'33%',
+          display:'flex',
+          justifyContent:'center'
+        };
+
+        const initials = [];
+
+        document.addEventListener('keypress', function(event) {
+          if (event.key !== undefined) {
+            const keypress = (event.key).toUpperCase();
+            if (keypress <= 'Z' && keypress >= 'A') {
+              if (initials.length === 0) {
+                initials.push(keypress);
+                document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " _ _";
+              }
+              else if (initials.length === 1) {
+                initials.push(keypress);
+                document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " " + initials[1] + " _";
+              }
+              else if (initials.length === 2) {
+                initials.push(keypress);
+                document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " " + initials[1] + " " + initials[2];
+              }
+            }
+          }
+        }, true);
         
-        this._context.font = '60px Lucida Console';
-        this._context.fillText('Score: ' + state.playerScore,
-          this.props.width/2 - 160,
-          this.props.height/2);
-        this._context.restore();
-      }, 0);
-    
+        const testElement =
+          <div>
+            <div style={{display:'flex', justifyContent:'center'}}>
+              <img src="../8-bit-logo.png" width='400'/>
+            </div>
+            
+            <div style={style_scorerow}>
+              <p style={{fontSize:55, marginTop:'0.5cm'}}>LEADERBOARD</p>
+            </div>
+            <div style={style_scorerow}>
+              <p id="initials">ENTER INITIALS: _ _ _</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>RANK</p>
+              <p style={style_scorecell}>SCORE</p>
+              <p>NAME</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>1ST</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>2ND</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>3RD</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>4TH</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>5TH</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p style={{fontSize:30, marginTop:'2cm'}}>Team Jekyll for Swamphacks VII</p>
+            </div>
+          </div>;
+
+        ReactDOM.render(testElement, document.getElementById('root'));
+      }
+
       // retrieve from the database
 
       db.collection("HighScores")
         .get()
         .then(querySnapshot => {
         const data = querySnapshot.docs.map(doc => doc.data());
+                data.sort((a, b) => a.score > b.score ? -1 : 1);
+                console.log(data);
                 // array of cities objects
-                for(let x = 0; x < data.length; x++){
-                    console.log(data[x].name + " with a score of " + data[x].score); 
+                for(let x = 0; x < 5; x++){
+                    if (x < data.length) {
+                        console.log(data[x].name + " with a score of " + data[x].score); 
+                    } else {
+                        break;
+                    }
                 }
         });
-
-      /*
-      // Example of inserting HTML elements on page
-
-      const testElement =
-        <div>
-          <h1 style={{fontSize: 100, color: 'white'}}>
-            this is hidden text, congrats for finding it
-          </h1>
-          <h1 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 80, color: 'black'}}>
-            GAME OVER!
-          </h1>
-          <h2 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 60, color: 'black'}}>
-            Score: {this.state.playerScore}
-          </h2>
-        </div>;
-      ReactDOM.render(testElement, document.getElementById('root'));
-      */
 
       db.collection("HighScores").doc("Test").set({
         name: "ABC",
         score: state.playerScore
       })
-      .then(function() {
-        console.log("Successfully submitted scores")
-      })
-      .catch(function(error) {
-        console.error("Error submitting scores: ", error)
-      })
+        .then(function () {
+          console.log("Successfully submitted scores")
+        })
+        .catch(function (error) {
+          console.error("Error submitting scores: ", error)
+        })
     }
-    
+
     else {
-      setTimeout(()=>{
+      setTimeout(() => {
         this._setupCanvas();
         this._startGame();
       }, 0);
@@ -203,7 +288,7 @@ export default createReactClass({
     const state = this.state;
     this._context.fillRect(0, 0, this.props.width, this.props.height);
     this._context.save();
-    this._context.fillStyle = "#00ff00";
+    this._context.fillStyle = "white";
 
     //draw borders
     //this._border.draw();
@@ -220,11 +305,12 @@ export default createReactClass({
     //draw paddles
     this._player().draw();
     this._ai().draw();
+
     // draw the net
     const w = 4;
-    const x = (this.props.width - w)*0.5;
+    const x = (this.props.width - w) * 0.5;
     let y = 0;
-    const step = this.props.height/20; // how many net segments
+    const step = this.props.height / 20; // how many net segments
     while (y < this.props.height) {
       this._context.fillRect(x, y + step * 0.25, w, step * 0.5);
       y += step;
@@ -232,18 +318,18 @@ export default createReactClass({
 
     this._context.restore();
   },
-  _update(){
+  _update() {
     this._player().update();
     this._ai().update();
     this._ball().update();
   },
   _touch(evt) {
-    console.log( evt );
-    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight/2;
+    console.log(evt);
+    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight / 2;
     this._player().position(yPos);
   },
   // Triggers random event if conditions met
-  _triggerEvent(){
+  _triggerEvent() {
     const state = this.state;
     const dif = Math.floor(this.state.playerScore / 30 + 1)
 
@@ -268,15 +354,69 @@ export default createReactClass({
         paddleHits: 0,
         eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
       });
-      this._events().randomEvent();
+      this.randomEvent();
     }
+  },
+  randomEvent() {
+    const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
+    var name = ""
+    switch (eventID) {
+      case 1:
+        name = "So Tired"
+        this.setState({
+          paddleSpeed: this.state.paddleSpeed * 0.5
+        })
+        break;
+
+      case 2:
+        name = "Faster Paddles"
+        this.setState({
+          paddleSpeed: this.state.paddleSpeed * 1.25
+        })
+        break;
+
+      case 3:
+        name = "Who's Who?"
+        const tempX = this.state.playerx
+        this.setState({
+            playerx: this.state.aix,
+            aix: tempX
+        })
+        break;
+
+      case 4:
+        name = "Confused?"
+        const temp = this.state.upArrow
+        this.setState({
+          upArrow: this.state.downArrow,
+          downArrow: temp
+        })
+        break;
+
+      case 5:
+        name = "Ad Time!";
+        ReactDOM.render(<div style={{ position: "absolute", width: '100px', height: '100px', backgroundColor: 'orange' }}/>, document.getElementById('popup'));
+        // Do ad thing here
+        break;
+
+      case 6:
+        name = "Random Ball Size"
+        this.setState({
+          randomSize: true
+        })
+        break;
+    }
+    console.log(name, eventID)
+    this.setState({
+        mostRecentEvent: name
+    })  
   },
   render() {
     return <canvas
-            onTouchStart={this._touch}
-            onTouchMove={this._touch}
-            style={this._canvasStyle}
-            width={this.props.width}
-            height={this.props.height}/>
+      onTouchStart={this._touch}
+      onTouchMove={this._touch}
+      style={this._canvasStyle}
+      width={this.props.width}
+      height={this.props.height} />
   }
 });

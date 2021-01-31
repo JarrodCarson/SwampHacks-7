@@ -25,13 +25,7 @@ module.exports = function () {
                     break;
 
                 case 3:
-                    name = "Who's Who?"
-                    const tempX = state.playerx
-                    that.setState({
-                        playerx: state.aix,
-                        aix: tempX
-                    })
-                    break;
+                    
 
                 case 4:
                     name = "Confused?"
@@ -43,16 +37,12 @@ module.exports = function () {
                     break;
 
                 case 5:
-                    name = "So Tired"
-                    that.setState({
-                        paddleSpeed: state.paddleSpeed * 0.5
-                    })
-                    break;
+                    
 
                 case 6:
-                    name = "Spooky"
+                    name = "Random Ball Size"
                     that.setState({
-                        ghostBall: true
+                        randomSize: true
                     })
                     break;
 

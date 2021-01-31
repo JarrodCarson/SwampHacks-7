@@ -91,11 +91,14 @@ module.exports = function(){
         })
       }
 
+      if (state.randomSize) {
+        that.setState({
+          ballSize: Math.floor(Math.random() * 30) + 10
+        })
+      }
+
       context.beginPath();
       context.arc(state.ballx, state.bally, state.ballSize, 0, 2 * Math.PI);
-      if (state.ghostBall) {
-        context.fillStyle = "2f2f2f"
-      }
       context.fill();
       context.lineWidth = 0;
       context.strokeStyle = '#fff';
