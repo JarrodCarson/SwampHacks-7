@@ -7,12 +7,8 @@ module.exports = function () {
 
     return {
         randomEvent() {
-<<<<<<< HEAD
             const eventID = Math.floor(Math.random() * (this.state.difficulty * 3))
             console.log("Chose event: ", eventID, "\n")
-=======
-            console.log("event triggered!");
->>>>>>> e7aa69319c72cb6d8f3eb974b65abe9d7e42d536
         }
     };
 };
