@@ -13,8 +13,6 @@ module.exports = function(){
   const that = this;
   const r = Math.random();
 
-  const myAudio1 = document.createElement("audio");
-  myAudio1.src = "beep-03.mp3";
 
   return {
 
@@ -73,6 +71,8 @@ module.exports = function(){
         // const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
               
         // beep sound      
+        const myAudio1 = document.createElement("audio");
+        myAudio1.src = "beep-03.mp3";
         myAudio1.play();
 
         that.setState({
