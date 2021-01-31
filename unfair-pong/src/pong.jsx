@@ -152,7 +152,7 @@ export default createReactClass({
                 data.sort((a, b) => a.score > b.score ? -1 : 1);
                 console.log(data);
                 // array of cities objects
-                for(let x = 0; x < 5; x++){
+                for(let x = 0; x < 10; x++){
                     if (x < data.length) {
                         console.log(data[x].name + " with a score of " + data[x].score); 
                     } else {
