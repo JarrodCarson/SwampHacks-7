@@ -21,7 +21,7 @@ export default createReactClass({
       width: 1400
     }
   },
-  getInitialState(){
+  getInitialState() {
     return {
       upArrow: 38,
       downArrow: 40,
@@ -47,15 +47,15 @@ export default createReactClass({
       enable3D: true
     }
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     this._setupCanvas();
     this._context.font = '40px Lucida Console';
     this._context.fillText('Welcome to:',
-      this.props.width/2 - 120,
-      this.props.height/2 - 40);
+      this.props.width / 2 - 120,
+      this.props.height / 2 - 40);
     this._context.fillText('UNFAIR PONG',
-      this.props.width/2 - 120,
-      this.props.height/2);
+      this.props.width / 2 - 120,
+      this.props.height / 2);
 
     setTimeout(this._startGame, 3000);
   },
@@ -66,7 +66,6 @@ export default createReactClass({
   _player: require('./player'),
   _ai: require('./ai'),
   _border: require('./border'),
-  _events: require('./events'),
   _loop: null,
   _timer: null,
   _canvasStyle: {
@@ -80,27 +79,27 @@ export default createReactClass({
   },
   _startGame() {
 
-    if(this._loop){
+    if (this._loop) {
       return;
     }
 
     const keystate = this._keystate;
-    document.addEventListener('keydown', function(evt) {
+    document.addEventListener('keydown', function (evt) {
       keystate[evt.keyCode] = true;
     });
-    document.addEventListener('keyup', function(evt) {
+    document.addEventListener('keyup', function (evt) {
       delete keystate[evt.keyCode];
     });
-    document.addEventListener('ontouchstart', function(e) {e.preventDefault()}, false);
-    document.addEventListener('ontouchmove', function(e) {e.preventDefault()}, false);
+    document.addEventListener('ontouchstart', function (e) { e.preventDefault() }, false);
+    document.addEventListener('ontouchmove', function (e) { e.preventDefault() }, false);
 
-    this._loop = setInterval( () => {
+    this._loop = setInterval(() => {
       this._update();
       this._draw();
       this._triggerEvent();
-    },1);
+    }, 1);
 
-    this._timer = setInterval( () => {
+    this._timer = setInterval(() => {
       const state = this.state;
       this.setState({
         ["playerScore"]: state["playerScore"] + 1
@@ -114,37 +113,37 @@ export default createReactClass({
     clearInterval(this._timer);
     this._loop = null;
     this._timer = null;
-    setTimeout(()=>{
+    setTimeout(() => {
       this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
     }, 0);
 
   },
-  _setupCanvas: function() {
+  _setupCanvas: function () {
     this._canvas = ReactDOM.findDOMNode(this);
     this._context = this._canvas.getContext('2d');
   },
   _score(name) {
     const state = this.state;
-    const scorer = {player: 'ai', ai: 'player'}[name];
+    const scorer = { player: 'ai', ai: 'player' }[name];
     this.setState({
-      [scorer+'Score']: state[scorer+'Score'] + 1
+      [scorer + 'Score']: state[scorer + 'Score'] + 1
     });
     this._stopGame();
 
     if (scorer === 'ai') {
-      setTimeout(()=>{
+      setTimeout(() => {
         this._context.font = '80px Lucida Console';
         this._context.fillText("GAME OVER!",
-          this.props.width/2 - 240,
-          this.props.height/2 - 80);
-        
+          this.props.width / 2 - 240,
+          this.props.height / 2 - 80);
+
         this._context.font = '60px Lucida Console';
         this._context.fillText('Score: ' + state.playerScore,
-          this.props.width/2 - 160,
-          this.props.height/2);
+          this.props.width / 2 - 160,
+          this.props.height / 2);
         this._context.restore();
       }, 0);
-    
+
       // retrieve from the database
 
       db.collection("HighScores")
@@ -185,16 +184,16 @@ export default createReactClass({
         name: "ABC",
         score: state.playerScore
       })
-      .then(function() {
-        console.log("Successfully submitted scores")
-      })
-      .catch(function(error) {
-        console.error("Error submitting scores: ", error)
-      })
+        .then(function () {
+          console.log("Successfully submitted scores")
+        })
+        .catch(function (error) {
+          console.error("Error submitting scores: ", error)
+        })
     }
-    
+
     else {
-      setTimeout(()=>{
+      setTimeout(() => {
         this._setupCanvas();
         this._startGame();
       }, 0);
@@ -212,7 +211,7 @@ export default createReactClass({
 
     // draw scoreboard
     this._context.font = '20px Lucida Console';
-    this._context.fillText('Player: ' + state.playerScore , 20, 20 );
+    this._context.fillText('Player: ' + state.playerScore, 20, 20);
 
     // display current random event that was added
 
@@ -225,9 +224,9 @@ export default createReactClass({
 
     // draw the net
     const w = 4;
-    const x = (this.props.width - w)*0.5;
+    const x = (this.props.width - w) * 0.5;
     let y = 0;
-    const step = this.props.height/20; // how many net segments
+    const step = this.props.height / 20; // how many net segments
     while (y < this.props.height) {
       this._context.fillRect(x, y + step * 0.25, w, step * 0.5);
       y += step;
@@ -235,18 +234,18 @@ export default createReactClass({
 
     this._context.restore();
   },
-  _update(){
+  _update() {
     this._player().update();
     this._ai().update();
     this._ball().update();
   },
   _touch(evt) {
-    console.log( evt );
-    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight/2;
+    console.log(evt);
+    var yPos = evt.touches[0].pageY - evt.touches[0].target.offsetTop - this.state.paddleHeight / 2;
     this._player().position(yPos);
   },
   // Triggers random event if conditions met
-  _triggerEvent(){
+  _triggerEvent() {
     const state = this.state;
     const dif = Math.floor(this.state.playerScore / 30)
     var myAudio = document.createElement("audio");
@@ -272,15 +271,65 @@ export default createReactClass({
         paddleHits: 0,
         eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
       });
-      this._events().randomEvent();
+      this.randomEvent();
     }
+  },
+  randomEvent() {
+    const eventID = Math.floor(Math.random() * ((this.state.difficulty + 1) * 2))
+    console.log("Chose event: ", eventID, "\n")
+    var name
+    switch (eventID) {
+      case 0:
+        name = "Faster Ball"
+        this.setState({
+          ballSpeed: this.state.ballSpeed + 0.5
+        })
+        break;
+
+      case 1:
+        name = "Faster Paddles"
+        this.setState({
+          paddleSpeed: this.state.paddleSpeed * 2
+        })
+        break;
+
+      case 2:
+        name = "Ad Time!";
+        ReactDOM.render(<div style={{ position: "absolute", width: '100px', height: '100px', backgroundColor: 'orange' }}/>, document.getElementById('popup'));
+        // Do ad thing here
+        break;
+
+      case 3:
+        name = "Confused?"
+        const temp = this.state.upArrow
+        this.setState({
+          upArrow: this.state.downArrow,
+          downArrow: temp
+        })
+        break;
+
+      case 4:
+        name = "So Tired"
+        this.setState({
+          paddleSpeed: this.state.paddleSpeed * 0.75
+        })
+        break;
+
+      case 5:
+        name = "3D"
+        this.setState({
+          enable3D: true
+        })
+        break;
+    }
+    console.log(name)
   },
   render() {
     return <canvas
-            onTouchStart={this._touch}
-            onTouchMove={this._touch}
-            style={this._canvasStyle}
-            width={this.props.width}
-            height={this.props.height}/>
+      onTouchStart={this._touch}
+      onTouchMove={this._touch}
+      style={this._canvasStyle}
+      width={this.props.width}
+      height={this.props.height} />
   }
 });
