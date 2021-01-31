@@ -31,7 +31,7 @@ export default createReactClass({
       ballSize: 10,
       ballx: 100,
       bally: 100,
-      ballSpeed: 2,
+      ballSpeed: 7,
       velx: 0,
       vely: 0,
       aix: 1370,
@@ -149,15 +149,21 @@ export default createReactClass({
         .get()
         .then(querySnapshot => {
         const data = querySnapshot.docs.map(doc => doc.data());
+                data.sort((a, b) => a.score > b.score ? -1 : 1);
+                console.log(data);
                 // array of cities objects
-                for(let x = 0; x < data.length; x++){
-                    console.log(data[x].name + " with a score of " + data[x].score); 
+                for(let x = 0; x < 5; x++){
+                    if (x < data.length) {
+                        console.log(data[x].name + " with a score of " + data[x].score); 
+                    } else {
+                        break;
+                    }
                 }
         });
 
-      /*
       // Example of inserting HTML elements on page
 
+      /*
       const testElement =
         <div>
           <h1 style={{fontSize: 100, color: 'white'}}>
@@ -247,7 +253,7 @@ export default createReactClass({
       console.log("Difficulty: ", this.state.difficulty, "\n")
     }
 
-    if (this.state.paddleHits == this.state.eventTriggerVal) {
+    if (this.state.paddleHits === this.state.eventTriggerVal) {
       this.setState({
         paddleHits: 0,
         eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
