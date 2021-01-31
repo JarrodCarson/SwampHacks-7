@@ -72,7 +72,7 @@ module.exports = function(){
               
         // beep sound      
         const myAudio1 = document.createElement("audio");
-        let files = ["Rev1-AudioTrimmer.com.mp3", "Rev2-AudioTrimmer.com.mp3", "Rev3-AudioTrimmer.com.mp3", "person-beep.mp3", "person-beep2.mp3", "person-beep3.mp3", "boing1.mp3", "boing2.mp3"]
+        let files = ["Rev1-AudioTrimmer.com.mp3", "Rev2-AudioTrimmer.com.mp3", "Rev3-AudioTrimmer.com.mp3", "person-beep.mp3", "person-beep2.mp3", "person-beep3.mp3", "boing1.mp3", "boing2.mp3", "boing3.mp3"]
 
         myAudio1.src = files[Math.floor(Math.random() * files.length)]
         myAudio1.play();
