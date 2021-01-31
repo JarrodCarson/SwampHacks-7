@@ -6,6 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { db } from './firebase';
 
 var createReactClass = require('create-react-class');
 
@@ -138,6 +139,17 @@ export default createReactClass({
         this.props.height/2);
         this._context.restore();
       }, 0);
+
+      db.collection("HighScores").doc("Test").set({
+        name: "ABC",
+        score: state.playerScore
+      })
+      .then(function() {
+        console.log("Successfully submitted scores")
+      })
+      .catch(function(error) {
+        console.error("Error submitting scores: ", error)
+      })
     }
     
     else {
