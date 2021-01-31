@@ -142,6 +142,18 @@ export default createReactClass({
           this.props.height/2);
         this._context.restore();
       }, 0);
+    
+      // retrieve from the database
+
+      db.collection("HighScores")
+        .get()
+        .then(querySnapshot => {
+        const data = querySnapshot.docs.map(doc => doc.data());
+                // array of cities objects
+                for(let x = 0; x < data.length; x++){
+                    console.log(data[x].name + " with a score of " + data[x].score); 
+                }
+        });
 
       /*
       // Example of inserting HTML elements on page
