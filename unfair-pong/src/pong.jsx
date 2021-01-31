@@ -358,7 +358,8 @@ export default createReactClass({
     }
   },
   randomEvent() {
-    const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
+    // const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
+    const eventID = 5;
     var name = ""
     switch (eventID) {
       case 1:
@@ -396,8 +397,10 @@ export default createReactClass({
       case 5:
         name = "Ad Time!";
         let popup = document.getElementById('popup');
-        ReactDOM.render(<img src="https://i.ibb.co/16pm4B2/FAKE-AD.png" style={{ position: "center", width: '50%', height: '50%', zIndex: 1}}/>, popup);
+        ReactDOM.render(<img src="https://i.ibb.co/16pm4B2/FAKE-AD.png" style={{ width: '65%', position: "absolute", top: "50%", left: "50%", transform: 'translate(-50%, -50%)', zIndex: 1}}/>, popup);
         popup.onclick = () => { popup.style.display = "none" };
+
+        setInterval(popup.style.display = "block", 5000);
 
         break;
 
