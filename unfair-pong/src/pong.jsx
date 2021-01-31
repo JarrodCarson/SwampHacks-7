@@ -260,31 +260,31 @@ export default createReactClass({
 
             <div style={style_scorerow}>
               <p>1ST</p>
-              <p id="score1" style={style_scorecell}>9999</p>
+              <p id="score1" style={style_scorecell}>0000</p>
               <p id="name1">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>2ND</p>
-              <p id="score2" style={style_scorecell}>9999</p>
+              <p id="score2" style={style_scorecell}>0000</p>
               <p id="name2">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>3RD</p>
-              <p id="score3" style={style_scorecell}>9999</p>
+              <p id="score3" style={style_scorecell}>0000</p>
               <p id="name3">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>4TH</p>
-              <p id="score4" style={style_scorecell}>9999</p>
+              <p id="score4" style={style_scorecell}>0000</p>
               <p id="name4">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>5TH</p>
-              <p id="score5" style={style_scorecell}>9999</p>
+              <p id="score5" style={style_scorecell}>0000</p>
               <p id="name5">A B C</p>
             </div>
 
@@ -293,7 +293,7 @@ export default createReactClass({
             </div>
             
             <div style={style_scorerow}>
-              <a href='' onClick={refreshPage} style={{fontSize:30, marginTop:'2cm'}}>click here to restart</a>
+              <a href='' onClick={refreshPage} style={{fontSize:30, marginTop:'2cm'}}>PLAY AGAIN!</a>
             </div>
 
           </div>;
