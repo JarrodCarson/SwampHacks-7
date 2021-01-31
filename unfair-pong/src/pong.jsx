@@ -188,7 +188,9 @@ export default createReactClass({
             }
           }
         }, true);
-        
+        function refreshPage(){
+            window.location.reload();
+        } 
         const testElement =
           <div>
             <div style={{display:'flex', justifyContent:'center'}}>
@@ -241,6 +243,11 @@ export default createReactClass({
             <div style={style_scorerow}>
               <p style={{fontSize:30, marginTop:'2cm'}}>Team Jekyll for Swamphacks VII</p>
             </div>
+            
+            <div style={style_scorerow}>
+              <a href='' onClick={refreshPage} style={{fontSize:30, marginTop:'2cm'}}>click here to restart</a>
+            </div>
+
           </div>;
 
         ReactDOM.render(testElement, document.getElementById('root'));
