@@ -31,7 +31,7 @@ export default createReactClass({
       ballSize: 10,
       ballx: 100,
       bally: 100,
-      ballSpeed: 1,
+      ballSpeed: 8,
       velx: 0,
       vely: 0,
       aix: 1370,
@@ -139,9 +139,21 @@ export default createReactClass({
         this.props.height/2);
         this._context.restore();
       }, 0);
+      
+      // retrieve from the database
 
-      db.collection("HighScores").doc("Test").set({
-        name: "ABC",
+      db.collection("HighScores")
+        .get()
+        .then(querySnapshot => {
+        const data = querySnapshot.docs.map(doc => doc.data());
+                // array of cities objects
+                for(let x = 0; x < data.length; x++){
+                    console.log(data[x].name + " with a score of " + data[x].score); 
+                }
+        });
+
+      db.collection("HighScores").doc("bob").set({
+        name: "test",
         score: state.playerScore
       })
       .then(function() {
