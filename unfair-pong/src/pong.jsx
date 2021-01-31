@@ -6,19 +6,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { db } from './firebase';
 
 var createReactClass = require('create-react-class');
 
 export default createReactClass({
   propTypes: {
     height: PropTypes.number,
-    width: PropTypes.number,
-    upArrow: PropTypes.number,
-    downArrow: PropTypes.number,
-    ballSize: PropTypes.number,
-    paddleHeight: PropTypes.number,
-    paddleWidth: PropTypes.number,
-    paddleSpeed: PropTypes.number
+    width: PropTypes.number
   },
   getDefaultProps() {
     return {
@@ -68,6 +63,7 @@ export default createReactClass({
   _player: require('./player'),
   _ai: require('./ai'),
   _border: require('./border'),
+  _events: require('./events'),
   _loop: null,
   _timer: null,
   _canvasStyle: {
@@ -136,7 +132,7 @@ export default createReactClass({
       setTimeout(()=>{
         this._context.font = '80px Lucida Console';
         this._context.fillText("GAME OVER!",
-          this.props.width/2 - 230,
+          this.props.width/2 - 240,
           this.props.height/2 - 80);
         
         this._context.font = '60px Lucida Console';
@@ -163,6 +159,17 @@ export default createReactClass({
         </div>;
       ReactDOM.render(testElement, document.getElementById('root'));
       */
+
+      db.collection("HighScores").doc("Test").set({
+        name: "ABC",
+        score: state.playerScore
+      })
+      .then(function() {
+        console.log("Successfully submitted scores")
+      })
+      .catch(function(error) {
+        console.error("Error submitting scores: ", error)
+      })
     }
     
     else {
