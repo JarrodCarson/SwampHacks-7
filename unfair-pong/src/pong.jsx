@@ -249,6 +249,7 @@ export default createReactClass({
   _triggerEvent(){
     const state = this.state;
     const dif = Math.floor(this.state.playerScore / 30)
+    var myAudio = document.createElement("audio");
 
     // Calculates new difficulty level based on time survived
     if (dif != this.state.difficulty && dif < 4) {

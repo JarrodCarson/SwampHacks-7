@@ -16,7 +16,6 @@ module.exports = function () {
                     that.setState({
                         ballSpeed: state.ballSpeed + 0.5
                     })
-                    window.alert(name)
                     break;
                 
                 case 1:
@@ -24,13 +23,11 @@ module.exports = function () {
                     that.setState({
                         paddleSpeed: state.paddleSpeed * 2
                     })
-                    window.alert(name)
                     break;
 
                 case 2:
                     name = "Ad Time!"
                     // Do ad thing here
-                    window.alert(name)
                     break;
 
                 case 3:
@@ -40,7 +37,6 @@ module.exports = function () {
                         upArrow: state.downArrow,
                         downArrow: temp
                     })
-                    window.alert(name)
                     break;
 
                 case 4:
@@ -48,7 +44,6 @@ module.exports = function () {
                     this.setState({
                         paddleSpeed: state.paddleSpeed * 0.75
                     })
-                    window.alert(name)
                     break;
 
                 case 5:
@@ -56,7 +51,6 @@ module.exports = function () {
                     this.setState({
                         enable3D: true
                     })
-                    window.alert(name)
                     break;
             }
             console.log(name)
