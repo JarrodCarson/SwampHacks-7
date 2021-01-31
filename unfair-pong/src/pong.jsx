@@ -364,7 +364,7 @@ export default createReactClass({
       case 1:
         name = "So Tired"
         this.setState({
-          paddleSpeed: this.state.paddleSpeed * 0.5
+          paddleSpeed: this.state.paddleSpeed * 0.75
         })
         break;
 
