@@ -43,18 +43,18 @@ export default createReactClass({
       aiScore: 0,
       eventTriggerVal: Math.floor(Math.random() * 5) + 1,
       paddleHits: 0,
-      difficulty: 0,
-      enable3D: true
+      difficulty: 1,
+      enable3D: false,
+      randomSize: false,
+      mostRecentEvent: "",
+      smashMultiplier: 1
     }
   },
   componentDidMount: function () {
     this._setupCanvas();
-    this._context.font = '40px Lucida Console';
-    this._context.fillText('Welcome to:',
-      this.props.width / 2 - 120,
-      this.props.height / 2 - 40);
+    this._context.font = '100px Lucida Console';
     this._context.fillText('UNFAIR PONG',
-      this.props.width / 2 - 120,
+      this.props.width / 2 - 320,
       this.props.height / 2);
 
     setTimeout(this._startGame, 3000);
@@ -137,7 +137,11 @@ export default createReactClass({
         .then(querySnapshot => {
           const data = querySnapshot.docs.map(doc => doc.data());
           data.sort((a, b) => a.score > b.score ? -1 : 1);
-                  
+
+          if (state.playerScore < data[4].score) {
+            document.getElementById('initials').innerHTML = "BETTER LUCK NEXT TIME!";
+          }
+
           for(let rank = 0; rank < 5; rank++){
             if (rank < data.length) {
                 document.getElementById("score" + (rank+1)).innerHTML = data[rank].score;
@@ -230,7 +234,11 @@ export default createReactClass({
             }
           }
         }, true);
-        
+
+        function refreshPage(){
+            window.location.reload();
+        } 
+
         const leaderboard =
           <div>
             <div style={{display:'flex', justifyContent:'center'}}>
@@ -252,37 +260,42 @@ export default createReactClass({
 
             <div style={style_scorerow}>
               <p>1ST</p>
-              <p id="score1" style={style_scorecell}>0000</p>
+              <p id="score1" style={style_scorecell}>9999</p>
               <p id="name1">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>2ND</p>
-              <p id="score2" style={style_scorecell}>0000</p>
+              <p id="score2" style={style_scorecell}>9999</p>
               <p id="name2">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>3RD</p>
-              <p id="score3" style={style_scorecell}>0000</p>
+              <p id="score3" style={style_scorecell}>9999</p>
               <p id="name3">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>4TH</p>
-              <p id="score4" style={style_scorecell}>0000</p>
+              <p id="score4" style={style_scorecell}>9999</p>
               <p id="name4">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>5TH</p>
-              <p id="score5" style={style_scorecell}>0000</p>
+              <p id="score5" style={style_scorecell}>9999</p>
               <p id="name5">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p style={{fontSize:30, marginTop:'2cm'}}>Team Jekyll for Swamphacks VII</p>
             </div>
+            
+            <div style={style_scorerow}>
+              <a href='' onClick={refreshPage} style={{fontSize:30, marginTop:'2cm'}}>click here to restart</a>
+            </div>
+
           </div>;
 
         ReactDOM.render(leaderboard, document.getElementById('root'));
@@ -308,9 +321,9 @@ export default createReactClass({
 
     // draw scoreboard
     this._context.font = '20px Lucida Console';
-    this._context.fillText('Player: ' + state.playerScore, 20, 20);
-
-    // display current random event that was added
+    this._context.fillText('Player: ' + state.playerScore , 20, 20 );
+    this._context.fillText('Event: ' + state.mostRecentEvent, 300, 20)
+    this._context.fillText('Difficulty: ' + 'I '.repeat(state.difficulty) + '- '.repeat(3 - state.difficulty), 1150, 20)
 
     //draw ball
     this._ball().draw();
@@ -344,7 +357,7 @@ export default createReactClass({
   // Triggers random event if conditions met
   _triggerEvent() {
     const state = this.state;
-    const dif = Math.floor(this.state.playerScore / 30)
+    const dif = Math.floor(this.state.playerScore / 30 + 1)
 
     // Calculates new difficulty level based on time survived
     if (dif != this.state.difficulty && dif < 4) {
@@ -365,37 +378,39 @@ export default createReactClass({
     if (this.state.paddleHits == this.state.eventTriggerVal) {
       this.setState({
         paddleHits: 0,
-        eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
+        eventTriggerVal: Math.floor(Math.random() * (5 - this.state.difficulty)) + 1
       });
       this.randomEvent();
     }
   },
   randomEvent() {
-    const eventID = Math.floor(Math.random() * ((this.state.difficulty + 1) * 2))
-    console.log("Chose event: ", eventID, "\n")
-    var name
+    const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
+    var name = ""
     switch (eventID) {
-      case 0:
-        name = "Faster Ball"
-        this.setState({
-          ballSpeed: this.state.ballSpeed + 0.5
-        })
-        break;
-
       case 1:
-        name = "Faster Paddles"
+        name = "So Tired"
         this.setState({
-          paddleSpeed: this.state.paddleSpeed * 2
+          paddleSpeed: this.state.paddleSpeed * 0.75
         })
         break;
 
       case 2:
-        name = "Ad Time!";
-        ReactDOM.render(<div style={{ position: "absolute", width: '100px', height: '100px', backgroundColor: 'orange' }}/>, document.getElementById('popup'));
-        // Do ad thing here
+        name = "Faster Paddles"
+        this.setState({
+          paddleSpeed: this.state.paddleSpeed * 1.25
+        })
         break;
 
       case 3:
+        name = "Who's Who?"
+        const tempX = this.state.playerx
+        this.setState({
+            playerx: this.state.aix,
+            aix: tempX
+        })
+        break;
+
+      case 4:
         name = "Confused?"
         const temp = this.state.upArrow
         this.setState({
@@ -404,21 +419,27 @@ export default createReactClass({
         })
         break;
 
-      case 4:
-        name = "So Tired"
-        this.setState({
-          paddleSpeed: this.state.paddleSpeed * 0.75
-        })
+      case 5:
+        name = "Ad Time!";
+        let popup = document.getElementById('popup');
+        ReactDOM.render(<img src="https://i.ibb.co/16pm4B2/FAKE-AD.png" style={{ width: '50%', position: "absolute", top: "50%", left: "50%", transform: 'translate(-50%, -50%)', zIndex: 1}}/>, popup);
+        popup.onclick = () => { popup.style.display = "none" };
+
+        setInterval(popup.style.display = "block", 5000);
+
         break;
 
-      case 5:
-        name = "3D"
+      case 6:
+        name = "3D Ball"
         this.setState({
           enable3D: true
         })
         break;
     }
-    console.log(name)
+    console.log(name, eventID)
+    this.setState({
+        mostRecentEvent: name
+    })  
   },
   render() {
     return <canvas
