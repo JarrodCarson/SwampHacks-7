@@ -49,7 +49,16 @@ module.exports = function(){
         });
       }
 
-      const pdle = state.velx < 0 ? player : ai;
+      var pdle = state.velx < 0 ? player : ai;
+
+      if (state.playerx > 10) {
+        if (pdle === player) {
+          pdle = ai
+        }
+        else {
+          pdle = player
+        }
+      }
 
       const AABBIntersect = (paddleX, paddleY, pWidth, pHeight, bx, by, bw, bh) => {
         return paddleX < bx + bw &&
@@ -76,8 +85,9 @@ module.exports = function(){
         that.setState({
           ballx: pdle === player ?
           state.playerx + state.paddleWidth : state.aix - state.ballSize,
-          velx: -1 * state.velx,
-          vely: ydir * state.velx * Math.sin(phi),
+          velx: -1 * state.velx * state.smashMultiplier,
+          vely: ydir * state.velx * Math.sin(phi) * state.smashMultiplier,
+          smashMultiplier: 1,
           paddleHits: state.paddleHits += 1
         });
       }
@@ -92,6 +102,12 @@ module.exports = function(){
       if (state.enable3D) {
         that.setState({
           ballSize: 10 + 10 * 9 * ((props.width/2 - Math.abs(props.width/2 - state.ballx))/(props.width/2))
+        })
+      }
+
+      if (state.randomSize) {
+        that.setState({
+          ballSize: Math.floor(Math.random() * 30) + 10
         })
       }
 

@@ -43,8 +43,11 @@ export default createReactClass({
       aiScore: 0,
       eventTriggerVal: Math.floor(Math.random() * 5) + 1,
       paddleHits: 0,
-      difficulty: 0,
-      enable3D: true
+      difficulty: 1,
+      enable3D: false,
+      randomSize: false,
+      mostRecentEvent: "",
+      smashMultiplier: 1
     }
   },
   componentDidMount: function () {
@@ -292,9 +295,9 @@ export default createReactClass({
 
     // draw scoreboard
     this._context.font = '20px Lucida Console';
-    this._context.fillText('Player: ' + state.playerScore, 20, 20);
-
-    // display current random event that was added
+    this._context.fillText('Player: ' + state.playerScore , 20, 20 );
+    this._context.fillText('Event: ' + state.mostRecentEvent, 300, 20)
+    this._context.fillText('Difficulty: ' + 'I '.repeat(state.difficulty) + '- '.repeat(3 - state.difficulty), 1150, 20)
 
     //draw ball
     this._ball().draw();
@@ -328,8 +331,7 @@ export default createReactClass({
   // Triggers random event if conditions met
   _triggerEvent() {
     const state = this.state;
-    const dif = Math.floor(this.state.playerScore / 30)
-    var myAudio = document.createElement("audio");
+    const dif = Math.floor(this.state.playerScore / 30 + 1)
 
     // Calculates new difficulty level based on time survived
     if (dif != this.state.difficulty && dif < 4) {
@@ -356,31 +358,33 @@ export default createReactClass({
     }
   },
   randomEvent() {
-    const eventID = Math.floor(Math.random() * ((this.state.difficulty + 1) * 2))
-    console.log("Chose event: ", eventID, "\n")
-    var name
+    const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
+    var name = ""
     switch (eventID) {
-      case 0:
-        name = "Faster Ball"
-        this.setState({
-          ballSpeed: this.state.ballSpeed + 0.5
-        })
-        break;
-
       case 1:
-        name = "Faster Paddles"
+        name = "So Tired"
         this.setState({
-          paddleSpeed: this.state.paddleSpeed * 2
+          paddleSpeed: this.state.paddleSpeed * 0.5
         })
         break;
 
       case 2:
-        name = "Ad Time!";
-        ReactDOM.render(<div style={{ position: "absolute", width: '100px', height: '100px', backgroundColor: 'orange' }}/>, document.getElementById('popup'));
-        // Do ad thing here
+        name = "Faster Paddles"
+        this.setState({
+          paddleSpeed: this.state.paddleSpeed * 1.25
+        })
         break;
 
       case 3:
+        name = "Who's Who?"
+        const tempX = this.state.playerx
+        this.setState({
+            playerx: this.state.aix,
+            aix: tempX
+        })
+        break;
+
+      case 4:
         name = "Confused?"
         const temp = this.state.upArrow
         this.setState({
@@ -389,21 +393,23 @@ export default createReactClass({
         })
         break;
 
-      case 4:
-        name = "So Tired"
-        this.setState({
-          paddleSpeed: this.state.paddleSpeed * 0.75
-        })
+      case 5:
+        name = "Ad Time!";
+        ReactDOM.render(<div style={{ position: "absolute", width: '100px', height: '100px', backgroundColor: 'orange' }}/>, document.getElementById('popup'));
+        // Do ad thing here
         break;
 
-      case 5:
-        name = "3D"
+      case 6:
+        name = "Random Ball Size"
         this.setState({
-          enable3D: true
+          randomSize: true
         })
         break;
     }
-    console.log(name)
+    console.log(name, eventID)
+    this.setState({
+        mostRecentEvent: name
+    })  
   },
   render() {
     return <canvas
