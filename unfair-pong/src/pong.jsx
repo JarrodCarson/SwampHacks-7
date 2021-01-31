@@ -32,6 +32,7 @@ export default createReactClass({
       ballx: 100,
       bally: 100,
       ballSpeed: 2,
+      ballSpeedOld: 2,
       velx: 0,
       vely: 0,
       aix: 1370,
@@ -40,9 +41,10 @@ export default createReactClass({
       playery: 100,
       playerScore: 0,
       aiScore: 0,
-      eventTriggerVal: Math.floor(Math.random() * 10) + 1,
+      eventTriggerVal: Math.floor(Math.random() * 5) + 1,
       paddleHits: 0,
-      difficulty: 0
+      difficulty: 0,
+      enable3D: true
     }
   },
   componentDidMount: function() {
@@ -233,6 +235,14 @@ export default createReactClass({
         difficulty: dif
       })
       console.log("Difficulty: ", this.state.difficulty, "\n")
+    }
+
+    // To avoid an issue where adjusting speed would break the game
+    if (state.ballSpeedOld != state.ballSpeed) {
+      this.setState({
+        ballSpeedOld: state.ballSpeed
+      })
+      this._startGame()
     }
 
     if (this.state.paddleHits == this.state.eventTriggerVal) {
