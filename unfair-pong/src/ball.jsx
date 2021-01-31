@@ -96,7 +96,7 @@ module.exports = function(){
 
       if (state.enable3D) {
         that.setState({
-          ballSize: 10 + 10 * 9 * ((props.width/2 - Math.abs(props.width/2 - state.ballx))/(props.width/2))
+          ballSize: 10 + 10 * 3 * ((props.width/2 - Math.abs(props.width/2 - state.ballx))/(props.width/2))
         })
       }
 

@@ -404,9 +404,9 @@ export default createReactClass({
         break;
 
       case 6:
-        name = "Random Ball Size"
+        name = "3D Ball"
         this.setState({
-          randomSize: true
+          enable3D: true
         })
         break;
     }
