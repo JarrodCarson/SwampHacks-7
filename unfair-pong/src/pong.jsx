@@ -43,8 +43,12 @@ export default createReactClass({
       aiScore: 0,
       eventTriggerVal: Math.floor(Math.random() * 5) + 1,
       paddleHits: 0,
-      difficulty: 0,
-      enable3D: true
+      difficulty: 1,
+      enable3D: false,
+      ghostBall: false,
+      ghostInterval: 0,
+      mostRecentEvent: "",
+      smashMultiplier: 1
     }
   },
   componentDidMount: function() {
@@ -207,6 +211,8 @@ export default createReactClass({
     // draw scoreboard
     this._context.font = '20px Lucida Console';
     this._context.fillText('Player: ' + state.playerScore , 20, 20 );
+    this._context.fillText('Event: ' + state.mostRecentEvent, 300, 20)
+    this._context.fillText('Difficulty: ' + 'I '.repeat(state.difficulty) + '- '.repeat(3 - state.difficulty), 1150, 20)
 
     //draw ball
     this._ball().draw();
@@ -239,7 +245,7 @@ export default createReactClass({
   // Triggers random event if conditions met
   _triggerEvent(){
     const state = this.state;
-    const dif = Math.floor(this.state.playerScore / 30)
+    const dif = Math.floor(this.state.playerScore / 30 + 1)
 
     // Calculates new difficulty level based on time survived
     if (dif != this.state.difficulty && dif < 4) {

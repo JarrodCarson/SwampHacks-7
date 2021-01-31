@@ -7,53 +7,63 @@ module.exports = function () {
 
     return {
         randomEvent() {
-            const eventID = Math.floor(Math.random() * ((state.difficulty + 1) * 2))
-            console.log("Chose event: ", eventID, "\n")
-            var name
+            const eventID = Math.floor(Math.random() * ((state.difficulty) * 2)) + 1
+            var name = ""
             switch(eventID) {
-                case 0:
-                    name = "Faster Ball"
+                case 1:
+                    name = "Faster Ball?"
                     that.setState({
-                        ballSpeed: state.ballSpeed + 0.5
+                        smashMultiplier: state.smashMultiplier + 0.1
                     })
                     break;
                 
-                case 1:
+                case 2:
                     name = "Faster Paddles"
                     that.setState({
-                        paddleSpeed: state.paddleSpeed * 2
+                        paddleSpeed: state.paddleSpeed * 1.25
                     })
                     break;
 
-                case 2:
-                    name = "Ad Time!"
-                    // Do ad thing here
-                    break;
-
                 case 3:
-                    name = "Confused?"
-                    const temp = state.upArrow
-                    this.setState({
-                        upArrow: state.downArrow,
-                        downArrow: temp
+                    name = "Who's Who?"
+                    const tempX = state.playerx
+                    that.setState({
+                        playerx: state.aix,
+                        aix: tempX
                     })
                     break;
 
                 case 4:
-                    name = "So Tired"
-                    this.setState({
-                        paddleSpeed: state.paddleSpeed * 0.75
+                    name = "Confused?"
+                    const tempDir = state.upArrow
+                    that.setState({
+                        upArrow: state.downArrow,
+                        downArrow: tempDir
                     })
                     break;
 
                 case 5:
-                    name = "3D"
-                    this.setState({
-                        enable3D: true
+                    name = "So Tired"
+                    that.setState({
+                        paddleSpeed: state.paddleSpeed * 0.5
                     })
                     break;
+
+                case 6:
+                    name = "Spooky"
+                    that.setState({
+                        ghostBall: true
+                    })
+                    break;
+
+                default:
+                    name = state.mostRecentEvent
+                    break;
             }
-            console.log(name)
+            console.log(name, eventID)
+            that.setState({
+                mostRecentEvent: name
+            })
         }
     };
 };
