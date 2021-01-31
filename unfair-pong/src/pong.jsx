@@ -358,8 +358,7 @@ export default createReactClass({
     }
   },
   randomEvent() {
-    // const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
-    const eventID = 5;
+    const eventID = Math.floor(Math.random() * ((this.state.difficulty) * 2)) + 1
     var name = ""
     switch (eventID) {
       case 1:
