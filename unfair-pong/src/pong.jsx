@@ -31,7 +31,7 @@ export default createReactClass({
       ballSize: 10,
       ballx: 100,
       bally: 100,
-      ballSpeed: 8,
+      ballSpeed: 2,
       velx: 0,
       vely: 0,
       aix: 1370,
@@ -40,8 +40,9 @@ export default createReactClass({
       playery: 100,
       playerScore: 0,
       aiScore: 0,
-      eventTriggerVal: Math.floor(Math.random() * 15) + 1,
-      paddleHits: 0
+      eventTriggerVal: Math.floor(Math.random() * 10) + 1,
+      paddleHits: 0,
+      difficulty: 0
     }
   },
   componentDidMount: function() {
@@ -130,30 +131,38 @@ export default createReactClass({
 
     if (scorer === 'ai') {
       setTimeout(()=>{
-        this._context.font = '30px Lucida Console';
-        this._context.fillText("Game Over!",
-        this.props.width/2 - 120,
-        this.props.height/2 - 40);
+        this._context.font = '80px Lucida Console';
+        this._context.fillText("GAME OVER!",
+          this.props.width/2 - 240,
+          this.props.height/2 - 80);
+        
+        this._context.font = '60px Lucida Console';
         this._context.fillText('Score: ' + state.playerScore,
-        this.props.width/2 - 120,
-        this.props.height/2);
+          this.props.width/2 - 160,
+          this.props.height/2);
         this._context.restore();
       }, 0);
-      
-      // retrieve from the database
 
-      db.collection("HighScores")
-        .get()
-        .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.data());
-                // array of cities objects
-                for(let x = 0; x < data.length; x++){
-                    console.log(data[x].name + " with a score of " + data[x].score); 
-                }
-        });
+      /*
+      // Example of inserting HTML elements on page
 
-      db.collection("HighScores").doc("bob").set({
-        name: "test",
+      const testElement =
+        <div>
+          <h1 style={{fontSize: 100, color: 'white'}}>
+            this is hidden text, congrats for finding it
+          </h1>
+          <h1 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 80, color: 'black'}}>
+            GAME OVER!
+          </h1>
+          <h2 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 60, color: 'black'}}>
+            Score: {this.state.playerScore}
+          </h2>
+        </div>;
+      ReactDOM.render(testElement, document.getElementById('root'));
+      */
+
+      db.collection("HighScores").doc("Test").set({
+        name: "ABC",
         score: state.playerScore
       })
       .then(function() {
@@ -216,12 +225,22 @@ export default createReactClass({
   // Triggers random event if conditions met
   _triggerEvent(){
     const state = this.state;
+    const dif = Math.floor(this.state.playerScore / 30)
+
+    // Calculates new difficulty level based on time survived
+    if (dif != this.state.difficulty && dif < 4) {
+      this.setState({
+        difficulty: dif
+      })
+      console.log("Difficulty: ", this.state.difficulty, "\n")
+    }
+
     if (this.state.paddleHits == this.state.eventTriggerVal) {
       this.setState({
         paddleHits: 0,
-        eventTriggerVal: Math.floor(Math.random() * 15) + 1
+        eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
       });
-      console.log("Event Triggered!\n")
+      this._events().randomEvent();
     }
   },
   render() {
