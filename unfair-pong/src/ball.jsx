@@ -74,6 +74,13 @@ module.exports = function(){
       }
     },
     draw(){
+
+      if (state.enable3D) {
+        that.setState({
+          ballSize: 10 + 10 * 9 * ((props.width/2 - Math.abs(props.width/2 - state.ballx))/(props.width/2))
+        })
+      }
+
       context.beginPath();
       context.arc(state.ballx, state.bally, state.ballSize, 0, 2 * Math.PI);
       context.fill();
