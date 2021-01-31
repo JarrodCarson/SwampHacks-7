@@ -129,36 +129,117 @@ export default createReactClass({
     this._stopGame();
 
     if (scorer === 'ai') {
-      setTimeout(()=>{
-        this._context.font = '80px Lucida Console';
-        this._context.fillText("GAME OVER!",
-          this.props.width/2 - 240,
-          this.props.height/2 - 80);
+      // TODO: change once we are able to gets highscores from DB
+      // if state.playerScore < lowest high score, or something like that
+      if (state.playerScore < 1) {
+        setTimeout(()=>{
+          this._context.font = '80px Lucida Console';
+          this._context.fillText("GAME OVER!",
+            this.props.width/2 - 240,
+            this.props.height/2 - 80);
+          
+          this._context.font = '60px Lucida Console';
+          this._context.fillText('Score: ' + state.playerScore,
+            this.props.width/2 - 160,
+            this.props.height/2);
+          this._context.restore();
+        }, 0);
+      }
+      else {
+        const style_scorerow = {
+          display: "flex",
+          justifyContent: "center",
+          fontFamily: "Lucida Console",
+          fontSize: 40,
+          color: "black",
+          height: 70,
+          width: "100%"
+        };
+
+        const style_scorecell = {
+          width:'33%',
+          display:'flex',
+          justifyContent:'center'
+        };
+
+        const initials = [];
+
+        document.addEventListener('keypress', function(event) {
+          if (event.key !== undefined) {
+            const keypress = (event.key).toUpperCase();
+            if (keypress <= 'Z' && keypress >= 'A') {
+              if (initials.length === 0) {
+                initials.push(keypress);
+                document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " _ _";
+              }
+              else if (initials.length === 1) {
+                initials.push(keypress);
+                document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " " + initials[1] + " _";
+              }
+              else if (initials.length === 2) {
+                initials.push(keypress);
+                document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " " + initials[1] + " " + initials[2];
+              }
+            }
+          }
+        }, true);
         
-        this._context.font = '60px Lucida Console';
-        this._context.fillText('Score: ' + state.playerScore,
-          this.props.width/2 - 160,
-          this.props.height/2);
-        this._context.restore();
-      }, 0);
+        const testElement =
+          <div>
+            <div style={{display:'flex', justifyContent:'center'}}>
+              <img src="../8-bit-logo.png" width='400'/>
+            </div>
+            
+            <div style={style_scorerow}>
+              <p style={{fontSize:55, marginTop:'0.5cm'}}>LEADERBOARD</p>
+            </div>
+            <div style={style_scorerow}>
+              <p id="initials">ENTER INITIALS: _ _ _</p>
+            </div>
 
-      /*
-      // Example of inserting HTML elements on page
+            <div style={style_scorerow}>
+              <p>RANK</p>
+              <p style={style_scorecell}>SCORE</p>
+              <p>NAME</p>
+            </div>
 
-      const testElement =
-        <div>
-          <h1 style={{fontSize: 100, color: 'white'}}>
-            this is hidden text, congrats for finding it
-          </h1>
-          <h1 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 80, color: 'black'}}>
-            GAME OVER!
-          </h1>
-          <h2 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 60, color: 'black'}}>
-            Score: {this.state.playerScore}
-          </h2>
-        </div>;
-      ReactDOM.render(testElement, document.getElementById('root'));
-      */
+            <div style={style_scorerow}>
+              <p>1ST</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>2ND</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>3RD</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>4TH</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p>5TH</p>
+              <p style={style_scorecell}>0000</p>
+              <p>ABC</p>
+            </div>
+
+            <div style={style_scorerow}>
+              <p style={{fontSize:30, marginTop:'2cm'}}>Team Jekyll for Swamphacks VII</p>
+            </div>
+          </div>;
+
+        ReactDOM.render(testElement, document.getElementById('root'));
+      }
 
       db.collection("HighScores").doc("Test").set({
         name: "ABC",
@@ -184,7 +265,7 @@ export default createReactClass({
     const state = this.state;
     this._context.fillRect(0, 0, this.props.width, this.props.height);
     this._context.save();
-    this._context.fillStyle = "#00ff00";
+    this._context.fillStyle = "white";
 
     //draw borders
     //this._border.draw();
