@@ -149,17 +149,17 @@ export default createReactClass({
       db.collection("HighScores")
         .get()
         .then(querySnapshot => {
-          const data = querySnapshot.docs.map(doc => doc.data());
-          data.sort((a, b) => a.score > b.score ? -1 : 1);
-          console.log(data);
-          // array of cities objects
-          for (let x = 0; x < 10; x++) {
-            if (x < data.length) {
-              console.log(data[x].name + " with a score of " + data[x].score);
-            } else {
-              break;
-            }
-          }
+        const data = querySnapshot.docs.map(doc => doc.data());
+                data.sort((a, b) => a.score > b.score ? -1 : 1);
+                console.log(data);
+                // array of cities objects
+                for(let x = 0; x < 5; x++){
+                    if (x < data.length) {
+                        console.log(data[x].name + " with a score of " + data[x].score); 
+                    } else {
+                        break;
+                    }
+                }
         });
 
       // Example of inserting HTML elements on page
@@ -213,12 +213,15 @@ export default createReactClass({
     this._context.font = '20px Lucida Console';
     this._context.fillText('Player: ' + state.playerScore, 20, 20);
 
+    // display current random event that was added
+
     //draw ball
     this._ball().draw();
 
     //draw paddles
     this._player().draw();
     this._ai().draw();
+
     // draw the net
     const w = 4;
     const x = (this.props.width - w) * 0.5;
