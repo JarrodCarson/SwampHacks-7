@@ -12,13 +12,7 @@ var createReactClass = require('create-react-class');
 export default createReactClass({
   propTypes: {
     height: PropTypes.number,
-    width: PropTypes.number,
-    upArrow: PropTypes.number,
-    downArrow: PropTypes.number,
-    ballSize: PropTypes.number,
-    paddleHeight: PropTypes.number,
-    paddleWidth: PropTypes.number,
-    paddleSpeed: PropTypes.number
+    width: PropTypes.number
   },
   getDefaultProps() {
     return {
@@ -68,6 +62,7 @@ export default createReactClass({
   _player: require('./player'),
   _ai: require('./ai'),
   _border: require('./border'),
+  _events: require('./events'),
   _loop: null,
   _timer: null,
   _canvasStyle: {
