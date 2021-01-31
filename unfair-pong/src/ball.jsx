@@ -13,7 +13,14 @@ module.exports = function(){
   const that = this;
   const r = Math.random();
 
+  const myAudio1 = document.createElement("audio");
+  myAudio1.src = "beep-03.mp3";
+
+  const myAudio2 = document.createElement("audio");
+  myAudio2.src = "beep-10.mp3";
+        
   return {
+
     serve(side){
       const phi = 0.1*pi*(1 - 2*r);
       that.setState({
@@ -67,6 +74,13 @@ module.exports = function(){
         const ydir = ( n > 0.5 ? -1 : 1 ) * dir;
         const phi = (0.25 * pi) * ( 2 * n + dir ) + r;
         // const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
+              
+        // beep sound      
+        if(dir < 0) {
+            myAudio1.play();
+        } else {
+            myAudio2.play();
+        }
 
         that.setState({
           ballx: pdle === player ?
