@@ -14,10 +14,10 @@ module.exports = function(){
   const r = Math.random();
 
   const myAudio1 = document.createElement("audio");
-  myAudio1.src = "beep-07.mp3";
+  myAudio1.src = "beep-03.mp3";
 
   const myAudio2 = document.createElement("audio");
-  myAudio2.src = "beep-08b.mp3";
+  myAudio2.src = "beep-10.mp3";
         
   return {
 
@@ -66,6 +66,7 @@ module.exports = function(){
         const phi = (0.25 * pi) * ( 2 * n + dir ) + r;
         // const smash = Math.abs(phi) > 0.2 * pi ? 1.1 : 1;
               
+        // beep sound      
         if(dir < 0) {
             myAudio1.play();
         } else {
