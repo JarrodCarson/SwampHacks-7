@@ -215,7 +215,7 @@ export default createReactClass({
                     .get()
                     .then(querySnapshot => {
                       const data = querySnapshot.docs.map(doc => doc.data());
-                      data.sort((a, b) => a.score > b.score ? -1 : 1);
+                      data.sort((a, b) => a.score - b.score);
                               
                       for(let rank = 0; rank < 5; rank++){
                         if (rank < data.length) {
