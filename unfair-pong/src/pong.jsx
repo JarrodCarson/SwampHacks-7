@@ -36,7 +36,7 @@ export default createReactClass({
       ballSize: 10,
       ballx: 100,
       bally: 100,
-      ballSpeed: 1,
+      ballSpeed: 2,
       velx: 0,
       vely: 0,
       aix: 1370,
@@ -134,15 +134,35 @@ export default createReactClass({
 
     if (scorer === 'ai') {
       setTimeout(()=>{
-        this._context.font = '30px Lucida Console';
-        this._context.fillText("Game Over!",
-        this.props.width/2 - 120,
-        this.props.height/2 - 40);
+        this._context.font = '80px Lucida Console';
+        this._context.fillText("GAME OVER!",
+          this.props.width/2 - 230,
+          this.props.height/2 - 80);
+        
+        this._context.font = '60px Lucida Console';
         this._context.fillText('Score: ' + state.playerScore,
-        this.props.width/2 - 120,
-        this.props.height/2);
+          this.props.width/2 - 160,
+          this.props.height/2);
         this._context.restore();
       }, 0);
+
+      /*
+      // Example of inserting HTML elements on page
+
+      const testElement =
+        <div>
+          <h1 style={{fontSize: 100, color: 'white'}}>
+            this is hidden text, congrats for finding it
+          </h1>
+          <h1 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 80, color: 'black'}}>
+            GAME OVER!
+          </h1>
+          <h2 style={{textAlign: 'center', fontFamily: 'Lucida Console', fontSize: 60, color: 'black'}}>
+            Score: {this.state.playerScore}
+          </h2>
+        </div>;
+      ReactDOM.render(testElement, document.getElementById('root'));
+      */
     }
     
     else {
@@ -202,7 +222,7 @@ export default createReactClass({
         paddleHits: 0,
         eventTriggerVal: Math.floor(Math.random() * 15) + 1
       });
-      console.log("Event Triggered!\n")
+      console.log("Event Triggered!\n");
     }
   },
   render() {
