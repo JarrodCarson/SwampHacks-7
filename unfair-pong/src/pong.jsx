@@ -227,7 +227,7 @@ export default createReactClass({
     if (this.state.paddleHits == this.state.eventTriggerVal) {
       this.setState({
         paddleHits: 0,
-        eventTriggerVal: Math.floor(Math.random() * 15) + 1
+        eventTriggerVal: Math.floor(Math.random() * 10) + 1
       });
       console.log("Event Triggered!\n");
     }
