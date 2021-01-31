@@ -7,7 +7,8 @@ module.exports = function () {
 
     return {
         randomEvent() {
-            console.log(state);
+            const eventID = Math.floor(Math.random() * (this.state.difficulty * 3))
+            console.log("Chose event: ", eventID, "\n")
         }
     };
 };

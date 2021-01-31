@@ -40,8 +40,9 @@ export default createReactClass({
       playery: 100,
       playerScore: 0,
       aiScore: 0,
-      eventTriggerVal: Math.floor(Math.random() * 15) + 1,
-      paddleHits: 0
+      eventTriggerVal: Math.floor(Math.random() * 10) + 1,
+      paddleHits: 0,
+      difficulty: 0
     }
   },
   componentDidMount: function() {
@@ -204,10 +205,20 @@ export default createReactClass({
   // Triggers random event if conditions met
   _triggerEvent(){
     const state = this.state;
+    const dif = Math.floor(this.state.playerScore / 30)
+
+    // Calculates new difficulty level based on time survived
+    if (dif != this.state.difficulty && dif < 4) {
+      this.setState({
+        difficulty: dif
+      })
+      console.log("Difficulty: ", this.state.difficulty, "\n")
+    }
+
     if (this.state.paddleHits == this.state.eventTriggerVal) {
       this.setState({
         paddleHits: 0,
-        eventTriggerVal: Math.floor(Math.random() * 10) + 1
+        eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
       });
       console.log("Event Triggered!\n")
     }
