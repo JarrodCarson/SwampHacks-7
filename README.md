@@ -14,7 +14,7 @@ We were inspired by challenging Flash games of old, such as Cat Mario and Unfair
 
 We decided to build ***Unfair Pong*** in React. Luckily for us, there already existed an [open-source Pong project in React](https://github.com/ohall/react-pong), which we used as a starting point. From there, we made visual adjustments, added our game events, and implemented a high score database.
 
-We used Firebase to host the game and store a database. The game is up and running for you to try out [here](unfairpong.web.app)!
+We used Firebase to host the game and store a database. The game is up and running for you to try out [here](https://unfairpong.web.app/)!
 
 ## Challenges we ran into
 
