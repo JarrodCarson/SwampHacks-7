@@ -7,7 +7,7 @@ module.exports = function () {
 
     return {
         randomEvent() {
-            console.log(state);
+            console.log("event triggered!");
         }
     };
 };

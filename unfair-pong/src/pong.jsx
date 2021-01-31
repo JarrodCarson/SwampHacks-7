@@ -229,7 +229,7 @@ export default createReactClass({
         paddleHits: 0,
         eventTriggerVal: Math.floor(Math.random() * 10) + 1
       });
-      console.log("Event Triggered!\n");
+      this._events().randomEvent();
     }
   },
   render() {
