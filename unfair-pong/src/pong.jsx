@@ -352,7 +352,7 @@ export default createReactClass({
     if (this.state.paddleHits == this.state.eventTriggerVal) {
       this.setState({
         paddleHits: 0,
-        eventTriggerVal: Math.floor(Math.random() * (10 - this.state.difficulty)) + 1
+        eventTriggerVal: Math.floor(Math.random() * (5 - this.state.difficulty)) + 1
       });
       this.randomEvent();
     }
@@ -396,8 +396,10 @@ export default createReactClass({
       case 5:
         name = "Ad Time!";
         let popup = document.getElementById('popup');
-        ReactDOM.render(<img src="https://i.ibb.co/16pm4B2/FAKE-AD.png" style={{ position: "center", width: '50%', height: '50%', zIndex: 1}}/>, popup);
+        ReactDOM.render(<img src="https://i.ibb.co/16pm4B2/FAKE-AD.png" style={{ width: '65%', position: "absolute", top: "50%", left: "50%", transform: 'translate(-50%, -50%)', zIndex: 1}}/>, popup);
         popup.onclick = () => { popup.style.display = "none" };
+
+        setInterval(popup.style.display = "block", 5000);
 
         break;
 
