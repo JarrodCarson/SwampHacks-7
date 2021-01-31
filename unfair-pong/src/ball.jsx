@@ -72,13 +72,10 @@ module.exports = function(){
               
         // beep sound      
         const myAudio1 = document.createElement("audio");
-        if( dir > 0) {
-            myAudio1.src = "person-beep.mp3";
-            myAudio1.play();
-        } else {
-            myAudio1.src = "beep-10.mp3";
-            myAudio1.play();
-        }
+        let files = ["Rev1-AudioTrimmer.com.mp3", "Rev2-AudioTrimmer.com.mp3", "Rev3-AudioTrimmer.com.mp3", "person-beep.mp3", "person-beep2.mp3", "person-beep3.mp3", "boing1.mp3", "boing2.mp3"]
+
+        myAudio1.src = files[Math.floor(Math.random() * files.length)]
+        myAudio1.play();
 
         that.setState({
           ballx: pdle === player ?
