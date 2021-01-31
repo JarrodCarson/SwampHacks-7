@@ -395,8 +395,10 @@ export default createReactClass({
 
       case 5:
         name = "Ad Time!";
-        ReactDOM.render(<div style={{ position: "absolute", width: '100px', height: '100px', backgroundColor: 'orange' }}/>, document.getElementById('popup'));
-        // Do ad thing here
+        let popup = document.getElementById('popup');
+        ReactDOM.render(<img src="https://i.ibb.co/16pm4B2/FAKE-AD.png" style={{ position: "center", width: '50%', height: '50%', zIndex: 1}}/>, popup);
+        popup.onclick = () => { popup.style.display = "none" };
+
         break;
 
       case 6:
