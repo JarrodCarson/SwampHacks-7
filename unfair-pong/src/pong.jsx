@@ -131,6 +131,23 @@ export default createReactClass({
     this._stopGame();
 
     if (scorer === 'ai') {
+      // Get the recorded scores from the DB
+      db.collection("HighScores")
+        .get()
+        .then(querySnapshot => {
+          const data = querySnapshot.docs.map(doc => doc.data());
+          data.sort((a, b) => a.score > b.score ? -1 : 1);
+                  
+          for(let rank = 0; rank < 5; rank++){
+            if (rank < data.length) {
+                document.getElementById("score" + (rank+1)).innerHTML = data[rank].score;
+                document.getElementById("name" + (rank+1)).innerHTML = data[rank].name;
+            } else {
+                break;
+            }
+          }
+        });
+
       // TODO: change once we are able to gets highscores from DB
       // if state.playerScore < lowest high score, or something like that
       if (state.playerScore < 1) {
@@ -174,19 +191,47 @@ export default createReactClass({
                 initials.push(keypress);
                 document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " _ _";
               }
-              else if (initials.length === 1) {
+              else if (initials.length === 1) {                
                 initials.push(keypress);
                 document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " " + initials[1] + " _";
               }
               else if (initials.length === 2) {
                 initials.push(keypress);
                 document.getElementById("initials").innerHTML = "ENTER INITIALS: " + initials[0] + " " + initials[1] + " " + initials[2];
+
+                // Add the new score to the DB
+                db.collection("HighScores").add ({
+                  name: initials[0] + " " + initials[1] + " " + initials[2],
+                  score: state.playerScore
+                })
+                .then(function () {
+                  console.log("Successfully submitted score");
+                  
+                  db.collection("HighScores")
+                    .get()
+                    .then(querySnapshot => {
+                      const data = querySnapshot.docs.map(doc => doc.data());
+                      data.sort((a, b) => a.score > b.score ? -1 : 1);
+                              
+                      for(let rank = 0; rank < 5; rank++){
+                        if (rank < data.length) {
+                            document.getElementById("score" + (rank+1)).innerHTML = data[rank].score;
+                            document.getElementById("name" + (rank+1)).innerHTML = data[rank].name;
+                        } else {
+                            break;
+                        }
+                      }
+                    });
+                })
+                .catch(function (error) {
+                  console.error("Error submitting score: ", error);
+                })
               }
             }
           }
         }, true);
         
-        const testElement =
+        const leaderboard =
           <div>
             <div style={{display:'flex', justifyContent:'center'}}>
               <img src="../8-bit-logo.png" width='400'/>
@@ -207,32 +252,32 @@ export default createReactClass({
 
             <div style={style_scorerow}>
               <p>1ST</p>
-              <p style={style_scorecell}>0000</p>
-              <p>ABC</p>
+              <p id="score1" style={style_scorecell}>0000</p>
+              <p id="name1">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>2ND</p>
-              <p style={style_scorecell}>0000</p>
-              <p>ABC</p>
+              <p id="score2" style={style_scorecell}>0000</p>
+              <p id="name2">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>3RD</p>
-              <p style={style_scorecell}>0000</p>
-              <p>ABC</p>
+              <p id="score3" style={style_scorecell}>0000</p>
+              <p id="name3">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>4TH</p>
-              <p style={style_scorecell}>0000</p>
-              <p>ABC</p>
+              <p id="score4" style={style_scorecell}>0000</p>
+              <p id="name4">A B C</p>
             </div>
 
             <div style={style_scorerow}>
               <p>5TH</p>
-              <p style={style_scorecell}>0000</p>
-              <p>ABC</p>
+              <p id="score5" style={style_scorecell}>0000</p>
+              <p id="name5">A B C</p>
             </div>
 
             <div style={style_scorerow}>
@@ -240,37 +285,8 @@ export default createReactClass({
             </div>
           </div>;
 
-        ReactDOM.render(testElement, document.getElementById('root'));
+        ReactDOM.render(leaderboard, document.getElementById('root'));
       }
-
-      // retrieve from the database
-
-      db.collection("HighScores")
-        .get()
-        .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.data());
-                data.sort((a, b) => a.score > b.score ? -1 : 1);
-                console.log(data);
-                // array of cities objects
-                for(let x = 0; x < 5; x++){
-                    if (x < data.length) {
-                        console.log(data[x].name + " with a score of " + data[x].score); 
-                    } else {
-                        break;
-                    }
-                }
-        });
-
-      db.collection("HighScores").doc("Test").set({
-        name: "ABC",
-        score: state.playerScore
-      })
-        .then(function () {
-          console.log("Successfully submitted scores")
-        })
-        .catch(function (error) {
-          console.error("Error submitting scores: ", error)
-        })
     }
 
     else {
